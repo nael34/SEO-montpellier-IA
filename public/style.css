@@ -1088,40 +1088,7 @@ h4 {
     pointer-events: none;
 }
 
-/* Faisceau laser asymétrique révélant un code en filigrane */
-.stack-card-cyber::before {
-    content: '0101 DATA CORE // STATUS: OPTIMAL';
-    position: absolute;
-    top: -50px;
-    left: -20%;
-    width: 140%;
-    height: 40px;
-    background: linear-gradient(180deg, transparent, rgba(6, 182, 212, 0.25) 50%, var(--color-cyan) 100%);
-    box-shadow: 0 0 25px var(--color-cyan), 0 0 50px var(--color-primary);
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    font-family: var(--font-heading);
-    font-size: 0.55rem;
-    letter-spacing: 3px;
-    color: var(--color-white);
-    opacity: 0;
-    animation: hud-laser-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Variations temporelles du laser pour asynchronisme matriciel */
-.stack-card-cyber:nth-child(2n)::before { animation-delay: -1.2s; content: 'SYS.AI CONFIG // LOAD: 99%'; }
-.stack-card-cyber:nth-child(3n)::before { animation-delay: -3.5s; content: 'LLM.ENGINE // THREADS: ACTIVE'; }
-.stack-card-cyber:nth-child(4n)::before { animation-delay: -2.1s; content: 'SCRAPER.NODE // MEMORY: SAFE'; }
-
-@keyframes hud-laser-sweep {
-    0% { top: -50px; opacity: 0; transform: scaleY(1); }
-    15% { opacity: 0.8; transform: scaleY(1.5); }
-    85% { opacity: 0.8; transform: scaleY(1.2); }
-    100% { top: calc(100% + 10px); opacity: 0; transform: scaleY(1); }
-}
+/* Épuré de l'effet de scan pour une lisibilité et une élégance absolues */
 
 /* Illumination suprême au survol */
 .stack-card-cyber:hover {
