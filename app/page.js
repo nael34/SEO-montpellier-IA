@@ -500,8 +500,8 @@ export default function Home() {
     
 
 
-      <Script src="/script.js" strategy="lazyOnload" />
-      <Script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js" strategy="lazyOnload" />
+      <Script src="/script.js" strategy="afterInteractive" />
+      <Script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js" strategy="afterInteractive" />
     </>
   );
 }

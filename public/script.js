@@ -1,7 +1,7 @@
 /* ============================================
    SITEWEBFR — Enhanced Script (Particles + Spline Fix)
    ============================================ */
-document.addEventListener('DOMContentLoaded', () => {
+function initSiteWeb() {
 
     /* ─── Particles Background ─── */
     const canvas = document.getElementById('particles-canvas');
@@ -438,4 +438,12 @@ document.addEventListener('DOMContentLoaded', () => {
         drawWaveform();
     }
 
-});
+}
+
+// Next.js hydration safe execution
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSiteWeb);
+} else {
+    // Si exécuté via next/script lazyOnload, le DOM est déjà monté
+    setTimeout(initSiteWeb, 100);
+}
