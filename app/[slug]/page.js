@@ -1,35 +1,28 @@
 /**
  * =============================================================================
- * PAGE DYNAMIQUE SEO — /[slug]
+ * PAGE DYNAMIQUE SEO PREMIUM — /[slug]
  * =============================================================================
  *
- * Route dynamique Next.js (App Router) standardisée pour Vercel.
- * Génère une page statique pour chaque slug complet métier-a-ville.
+ * Landing page dynamique à fort taux de conversion, conçue en parfaite
+ * harmonie avec la charte graphique "Dark AI Premium Theme" d'origine.
  *
- * Exemples de routes générées :
- *   /plombier-a-montpellier
- *   /avocat-a-gignac
- *   /expert-comptable-a-beziers
- *   /serrurier-a-sete
+ * Intègre du Glassmorphism, des dégradés lumineux, des micro-animations
+ * et des arguments sur-mesure pour chaque métier et ville ciblés.
  */
 
 import { getAllCombinations } from "@/data/seo-data";
 
-// Force le mode statique strict pour éviter les erreurs 404 Vercel en production
+// Verrouillage du routing statique sur Vercel
 export const dynamicParams = false;
 
 // --------------------------------------------------------------------------
-// Helper : met en majuscule la première lettre d'un mot
+// Helpers de formatage
 // --------------------------------------------------------------------------
 function capitalize(str) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// --------------------------------------------------------------------------
-// Helper : formate un nom pour l'affichage (gère les tirets)
-// "expert-comptable" → "Expert-Comptable"
-// --------------------------------------------------------------------------
 function formatName(str) {
   if (!str) return "";
   return str
@@ -38,10 +31,6 @@ function formatName(str) {
     .join("-");
 }
 
-// --------------------------------------------------------------------------
-// Helper : extrait le métier et la ville depuis le slug complet
-// "plombier-a-montpellier" → { metier: "plombier", ville: "montpellier" }
-// --------------------------------------------------------------------------
 function parseSlug(slug) {
   const parts = slug.split("-a-");
   const metier = parts[0] || "";
@@ -50,7 +39,7 @@ function parseSlug(slug) {
 }
 
 // --------------------------------------------------------------------------
-// 1. GÉNÉRATION STATIQUE DES PARAMS (SSG)
+// 1. GÉNÉRATION STATIQUE (SSG)
 // --------------------------------------------------------------------------
 export async function generateStaticParams() {
   return getAllCombinations().map(({ metier, ville }) => ({
@@ -68,8 +57,8 @@ export async function generateMetadata({ params }) {
   const metierDisplay = formatName(metier);
   const villeDisplay = formatName(ville);
 
-  const title = `${metierDisplay} à ${villeDisplay} — Site Web IA | Montpellier-IA`;
-  const description = `Vous êtes ${metierDisplay.toLowerCase()} à ${villeDisplay} ? Montpellier-IA crée votre site web professionnel avec intelligence artificielle. Générez plus de clients grâce à un site optimisé SEO, rapide et moderne. Devis gratuit.`;
+  const title = `${metierDisplay} à ${villeDisplay} — Création de Site Web IA | Montpellier-IA`;
+  const description = `Vous êtes ${metierDisplay.toLowerCase()} à ${villeDisplay} ? Attirez plus de clients avec un site web sur-mesure propulsé par l'intelligence artificielle. Design premium, ultra-rapide et optimisé SEO. Devis gratuit en 24h.`;
 
   return {
     title,
@@ -98,7 +87,7 @@ export async function generateMetadata({ params }) {
 }
 
 // --------------------------------------------------------------------------
-// 3. COMPOSANT DE PAGE
+// 3. COMPOSANT DE PAGE PREMIUM
 // --------------------------------------------------------------------------
 export default async function MetierVillePage({ params }) {
   const { slug } = await params;
@@ -108,115 +97,175 @@ export default async function MetierVillePage({ params }) {
   const villeDisplay = formatName(ville);
 
   return (
-    <main style={{ maxWidth: "800px", margin: "0 auto", padding: "2rem" }}>
-      {/* ── H1 principal : mot-clé exact ciblé ── */}
-      <h1>
-        {metierDisplay} à {villeDisplay} — Créez votre site web avec l&apos;IA
-      </h1>
+    <>
+      {/* ─── BARRE DE NAVIGATION (Reprise à l'identique du site) ─── */}
+      <nav className="navbar scrolled">
+        <div className="container navbar__inner">
+          <a href="https://montpellier-ia.dev" className="navbar__logo">
+            <img
+              src="/assets/images/logo-officiel.png"
+              alt="Montpellier-IA Logo"
+              className="navbar__logo-img"
+            />
+            <span>Montpellier<span className="text-gradient">-IA</span></span>
+          </a>
+          <div className="navbar__links">
+            <a href="https://montpellier-ia.dev/#services" className="navbar__link">Services</a>
+            <a href="https://montpellier-ia.dev/exemples.html" className="navbar__link">Réalisations</a>
+            <a href="https://montpellier-ia.dev/tarifs.html" className="navbar__link">Tarifs</a>
+            <a href="https://montpellier-ia.dev/#contact" className="btn btn--primary" style={{ padding: "0.5rem 1.2rem" }}>
+              Devis IA
+            </a>
+          </div>
+        </div>
+      </nav>
 
-      {/* ── Introduction optimisée SEO ── */}
-      <section>
-        <p>
-          Vous êtes <strong>{metierDisplay.toLowerCase()}</strong> à{" "}
-          <strong>{villeDisplay}</strong> et vous cherchez à développer votre
-          présence en ligne ? <strong>Montpellier-IA</strong> conçoit des sites
-          web professionnels grâce à l&apos;intelligence artificielle, spécialement
-          adaptés aux besoins des {metierDisplay.toLowerCase()}s.
-        </p>
+      {/* ─── SECTION HERO IMMERSIVE ─── */}
+      <header className="hero" style={{ minHeight: "90vh", paddingTop: "12rem" }}>
+        <div className="container hero__inner">
+          <div className="hero__content" style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
+            
+            {/* Badge animé premium */}
+            <div className="hero__badge">
+              <span>🚀 Solution web exclusive pour les professionnels</span>
+            </div>
+
+            {/* Titre principal optimisé SEO avec dégradé éclatant */}
+            <h1 className="hero__title">
+              Site web de <span className="text-gradient">{metierDisplay}</span> à{" "}
+              <span className="text-gradient">{villeDisplay}</span> propulsé par l&apos;IA
+            </h1>
+
+            {/* Sous-titre persuasif */}
+            <p className="hero__subtitle" style={{ margin: "0 auto 3rem", fontSize: "1.3rem" }}>
+              Démarquez-vous de vos concurrents à <strong>{villeDisplay}</strong>. Nous concevons pour votre activité de <strong>{metierDisplay.toLowerCase()}</strong> un site internet premium, visible sur Google et conçu pour transformer vos visiteurs en clients payants.
+            </p>
+
+            {/* Boutons d'action avec effet de pulsation (WOW effect) */}
+            <div className="hero__buttons" style={{ justifyContent: "center", gap: "1.5rem" }}>
+              <a href="https://montpellier-ia.dev/#contact" className="btn btn--primary btn--lg btn--pulse">
+                Obtenir ma proposition gratuite →
+              </a>
+              <a href="https://montpellier-ia.dev/exemples.html" className="btn btn--ghost btn--lg">
+                Voir nos designs
+              </a>
+            </div>
+
+            {/* Mini réassurance en bas du CTA */}
+            <div style={{ marginTop: "1.5rem", display: "flex", justifyContent: "center", gap: "2rem", color: "var(--color-text-muted)", fontSize: "0.9rem" }}>
+              <span>✓ Sans engagement</span>
+              <span>✓ Maquette en 48h</span>
+              <span>✓ Optimisé Référencement Local</span>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      {/* ─── SECTION BÉNÉFICES (GLASSMORPHISM BENTO GRID) ─── */}
+      <section className="section section--alt">
+        <div className="container">
+          
+          <div className="section-header">
+            <div className="section-header__badge">L&apos;avantage technologique</div>
+            <h2>Pourquoi un site IA pour votre activité de {metierDisplay.toLowerCase()} ?</h2>
+            <p>Une combinaison unique de design haut de gamme et d&apos;algorithmes de conversion.</p>
+          </div>
+
+          <div className="bento">
+            
+            {/* Carte 1 : SEO Local */}
+            <div className="bento__item">
+              <div className="card__icon">🎯</div>
+              <h3 className="card__title">Domination Locale Google</h3>
+              <p className="card__text">
+                Apparaissez en tête des recherches lorsqu&apos;un client tape &quot;<strong>{metierDisplay.toLowerCase()} {villeDisplay}</strong>&quot;. Notre structure sémantique est codée sur-mesure pour plaire à l&apos;algorithme de Google.
+              </p>
+            </div>
+
+            {/* Carte 2 : Vitesse Éclair */}
+            <div className="bento__item">
+              <div className="card__icon">⚡</div>
+              <h3 className="card__title">Vitesse de chargement IA</h3>
+              <p className="card__text">
+                Un site lent fait fuir 50% des clients. Nos pages s&apos;affichent en moins de 0.4 seconde sur mobile, garantissant une navigation fluide et un boost de votre référencement.
+              </p>
+            </div>
+
+            {/* Carte 3 : Réceptionniste IA 24/7 */}
+            <div className="bento__item">
+              <div className="card__icon">🤖</div>
+              <h3 className="card__title">Chatbot IA intégré</h3>
+              <p className="card__text">
+                Ne manquez plus aucun prospect pendant que vous êtes en intervention. Votre assistant IA répond aux questions fréquentes et qualifie vos demandes de devis 24h/24 et 7j/7.
+              </p>
+            </div>
+
+            {/* Carte 4 (Large) : Design Premium */}
+            <div className="bento__item bento__item--wide" style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+              <div style={{ flex: 1 }}>
+                <div className="card__icon">✨</div>
+                <h3 className="card__title">Un design d&apos;exception qui inspire confiance</h3>
+                <p className="card__text">
+                  En tant que {metierDisplay.toLowerCase()} à {villeDisplay}, votre image de marque est capitale. Fini les sites vitrines génériques. Nous appliquons les codes du design moderne (Glassmorphism, mode sombre élégant, animations fluides) pour positionner votre entreprise comme le leader de sa région.
+                </p>
+              </div>
+            </div>
+
+            {/* Carte 5 : Accompagnement */}
+            <div className="bento__item">
+              <div className="card__icon">🤝</div>
+              <h3 className="card__title">Clé en main &amp; Sans stress</h3>
+              <p className="card__text">
+                Hébergement sécurisé, maintenance technique, mises à jour et modifications incluses. Concentrez-vous sur vos clients, nous gérons toute la technique.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
       </section>
 
-      {/* ── Avantages clés ── */}
-      <section>
-        <h2>
-          Pourquoi choisir Montpellier-IA pour votre site de{" "}
-          {metierDisplay.toLowerCase()} à {villeDisplay} ?
-        </h2>
-        <ul>
-          <li>
-            🚀 <strong>Site optimisé SEO</strong> — Apparaissez en tête des
-            résultats Google pour &quot;{metierDisplay.toLowerCase()} {villeDisplay.toLowerCase()}&quot;
-          </li>
-          <li>
-            ⚡ <strong>Performance maximale</strong> — Temps de chargement
-            ultra-rapide grâce à notre technologie IA
-          </li>
-          <li>
-            📱 <strong>Design responsive</strong> — Parfait sur mobile, tablette
-            et ordinateur
-          </li>
-          <li>
-            🤖 <strong>Intelligence artificielle</strong> — Chatbot IA intégré
-            pour répondre à vos clients 24h/24
-          </li>
-          <li>
-            💰 <strong>Tarifs compétitifs</strong> — Solutions accessibles pour
-            les professionnels de {villeDisplay}
-          </li>
-        </ul>
+      {/* ─── SECTION CALL TO ACTION FINAL ─── */}
+      <section className="section" style={{ padding: "5rem 0" }}>
+        <div className="container">
+          <div className="card" style={{ textAlign: "center", padding: "4rem 2rem", maxWidth: "1000px", margin: "0 auto", borderColor: "var(--color-primary)" }}>
+            <h2 style={{ marginBottom: "1rem" }}>Prêt à propulser votre activité à {villeDisplay} ?</h2>
+            <p style={{ color: "var(--color-text-light)", maxWidth: "600px", margin: "0 auto 2rem" }}>
+              Obtenez une analyse gratuite de votre visibilité locale et découvrez comment notre technologie peut multiplier vos demandes de devis.
+            </p>
+            <a href="https://montpellier-ia.dev/#contact" className="btn btn--primary btn--lg btn--pulse">
+              Lancer mon projet web IA maintenant →
+            </a>
+          </div>
+        </div>
       </section>
 
-      {/* ── Call to action ── */}
-      <section>
-        <h2>Demandez votre devis gratuit</h2>
-        <p>
-          Contactez-nous dès maintenant pour obtenir un site web professionnel
-          adapté à votre activité de {metierDisplay.toLowerCase()} à{" "}
-          {villeDisplay}. Devis gratuit et sans engagement.
-        </p>
-        <a
-          href="https://montpellier-ia.dev/#contact"
-          style={{
-            display: "inline-block",
-            padding: "12px 24px",
-            backgroundColor: "#6C63FF",
-            color: "white",
-            borderRadius: "8px",
-            textDecoration: "none",
-            fontWeight: "bold",
-            marginTop: "1rem",
-          }}
-        >
-          Obtenir mon devis gratuit →
-        </a>
-      </section>
+      {/* ─── FOOTER SIMPLE PREMIUM ─── */}
+      <footer style={{ borderTop: "1px solid var(--color-border-light)", padding: "3rem 0", textAlign: "center", color: "var(--color-text-muted)", fontSize: "0.9rem" }}>
+        <div className="container">
+          <p>© {new Date().getFullYear()} Montpellier-IA. Tous droits réservés.</p>
+          <p style={{ marginTop: "0.5rem" }}>Solution d&apos;acquisition sur-mesure pour {metierDisplay.toLowerCase()}s opérant sur le secteur de {villeDisplay}.</p>
+        </div>
+      </footer>
 
-      {/* ── Contenu géolocalisé pour le SEO local ── */}
-      <section style={{ marginTop: "2rem" }}>
-        <h2>
-          Votre {metierDisplay.toLowerCase()} à {villeDisplay} mérite un site
-          web à la hauteur
-        </h2>
-        <p>
-          À {villeDisplay}, les clients recherchent de plus en plus leurs
-          prestataires sur internet. En tant que {metierDisplay.toLowerCase()},
-          un site web professionnel est devenu indispensable pour capter cette
-          clientèle locale. Montpellier-IA vous accompagne dans la création
-          d&apos;un site performant, visible sur Google et conçu pour convertir vos
-          visiteurs en clients.
-        </p>
-      </section>
-
-      {/* ── Données structurées JSON-LD pour le SEO ── */}
+      {/* ─── DONNÉES STRUCTURÉES SEO ─── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Service",
-            name: `Création de site web pour ${metierDisplay.toLowerCase()} à ${villeDisplay}`,
-            description: `Service de création de site web professionnel par intelligence artificielle pour les ${metierDisplay.toLowerCase()}s à ${villeDisplay}.`,
-            provider: {
+            "@type": "WebPage",
+            name: `Création de site web pour ${metierDisplay} à ${villeDisplay}`,
+            description: `Service premium de conception de site internet par IA pour les ${metierDisplay.toLowerCase()}s basés à ${villeDisplay}.`,
+            publisher: {
               "@type": "Organization",
               name: "Montpellier-IA",
               url: "https://montpellier-ia.dev",
             },
-            areaServed: {
-              "@type": "City",
-              name: villeDisplay,
-            },
           }),
         }}
       />
-    </main>
+    </>
   );
 }
