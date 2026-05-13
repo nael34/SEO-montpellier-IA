@@ -1,80 +1,69 @@
 /**
  * =============================================================================
- * PAGE DYNAMIQUE SEO — /[metier]-a-[ville]
+ * PAGE DYNAMIQUE SEO — /[slug]
  * =============================================================================
  *
- * Route dynamique Next.js (App Router) qui génère une page statique pour
- * chaque combinaison métier + ville lors du build (SSG).
+ * Route dynamique Next.js (App Router) standardisée pour Vercel.
+ * Génère une page statique pour chaque slug complet métier-a-ville.
  *
  * Exemples de routes générées :
  *   /plombier-a-montpellier
  *   /avocat-a-gignac
  *   /expert-comptable-a-beziers
  *   /serrurier-a-sete
- *
- * Fonctionnalités :
- *   1. generateStaticParams() → pré-génère toutes les combinaisons
- *   2. generateMetadata()     → balises <title> et <meta description> dynamiques
- *   3. Page()                 → composant React avec contenu SEO optimisé
  */
 
-import { metiers, villes, getAllCombinations } from "@/data/seo-data";
+import { getAllCombinations } from "@/data/seo-data";
 
-// Force Next.js à ne servir que les pages générées statiquement via generateStaticParams
-// Désactive le rendu à la volée (SSR) qui cause l'erreur Vercel cdg1 sur les routes introuvables
+// Force le mode statique strict pour éviter les erreurs 404 Vercel en production
 export const dynamicParams = false;
 
 // --------------------------------------------------------------------------
 // Helper : met en majuscule la première lettre d'un mot
 // --------------------------------------------------------------------------
 function capitalize(str) {
+  if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // --------------------------------------------------------------------------
 // Helper : formate un nom pour l'affichage (gère les tirets)
-// "expert-comptable" → "Expert-Comptable", "beziers" → "Beziers"
+// "expert-comptable" → "Expert-Comptable"
 // --------------------------------------------------------------------------
-function formatName(slug) {
-  return slug
+function formatName(str) {
+  if (!str) return "";
+  return str
     .split("-")
     .map((word) => capitalize(word))
     .join("-");
 }
 
 // --------------------------------------------------------------------------
-// 1. GÉNÉRATION STATIQUE DES PARAMS
+// Helper : extrait le métier et la ville depuis le slug complet
+// "plombier-a-montpellier" → { metier: "plombier", ville: "montpellier" }
 // --------------------------------------------------------------------------
-// Next.js appelle cette fonction au build pour connaître toutes les
-// combinaisons de paramètres à pré-rendre en HTML statique.
-//
-// Chaque objet retourné correspond à un segment de route dynamique.
-// Le paramètre s'appelle "metier-a-ville" car le dossier est [metier]-a-[ville],
-// mais Next.js le traite comme un catch-all pour le segment entier.
-// --------------------------------------------------------------------------
+function parseSlug(slug) {
+  const parts = slug.split("-a-");
+  const metier = parts[0] || "";
+  const ville = parts[1] || "";
+  return { metier, ville };
+}
 
-/**
- * IMPORTANT : Next.js interprète [metier]-a-[ville] comme DEUX paramètres
- * dynamiques distincts : `metier` et `ville`, séparés par le texte littéral "-a-".
- */
+// --------------------------------------------------------------------------
+// 1. GÉNÉRATION STATIQUE DES PARAMS (SSG)
+// --------------------------------------------------------------------------
 export async function generateStaticParams() {
   return getAllCombinations().map(({ metier, ville }) => ({
-    metier,
-    ville,
+    slug: `${metier}-a-${ville}`,
   }));
 }
 
 // --------------------------------------------------------------------------
 // 2. MÉTADONNÉES SEO DYNAMIQUES
 // --------------------------------------------------------------------------
-// Next.js utilise cette fonction pour injecter les balises <head> :
-//   - <title> optimisé pour le référencement
-//   - <meta name="description"> avec mots-clés naturels
-//   - Balise canonical pour éviter le contenu dupliqué
-//   - Open Graph pour le partage sur les réseaux sociaux
-// --------------------------------------------------------------------------
 export async function generateMetadata({ params }) {
-  const { metier, ville } = await params;
+  const { slug } = await params;
+  const { metier, ville } = parseSlug(slug);
 
   const metierDisplay = formatName(metier);
   const villeDisplay = formatName(ville);
@@ -85,30 +74,22 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-
-    // Balise canonical pour éviter le duplicate content
     alternates: {
-      canonical: `https://montpellier-ia.dev/${metier}-a-${ville}`,
+      canonical: `https://montpellier-ia.dev/${slug}`,
     },
-
-    // Open Graph (partage Facebook, LinkedIn, etc.)
     openGraph: {
       title,
       description,
-      url: `https://montpellier-ia.dev/${metier}-a-${ville}`,
+      url: `https://montpellier-ia.dev/${slug}`,
       siteName: "Montpellier-IA",
       locale: "fr_FR",
       type: "website",
     },
-
-    // Twitter Card
     twitter: {
       card: "summary_large_image",
       title,
       description,
     },
-
-    // Robots : indexer et suivre les liens
     robots: {
       index: true,
       follow: true,
@@ -119,19 +100,15 @@ export async function generateMetadata({ params }) {
 // --------------------------------------------------------------------------
 // 3. COMPOSANT DE PAGE
 // --------------------------------------------------------------------------
-// Contenu SEO optimisé avec des balises sémantiques (h1, h2, p, section).
-// Le contenu est volontairement riche en mots-clés pertinents pour le
-// référencement naturel tout en restant lisible pour l'utilisateur.
-// --------------------------------------------------------------------------
 export default async function MetierVillePage({ params }) {
-  const { metier, ville } = await params;
+  const { slug } = await params;
+  const { metier, ville } = parseSlug(slug);
 
   const metierDisplay = formatName(metier);
   const villeDisplay = formatName(ville);
 
   return (
     <main style={{ maxWidth: "800px", margin: "0 auto", padding: "2rem" }}>
-
       {/* ── H1 principal : mot-clé exact ciblé ── */}
       <h1>
         {metierDisplay} à {villeDisplay} — Créez votre site web avec l&apos;IA
