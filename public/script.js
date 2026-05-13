@@ -297,8 +297,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function drawWaveform() {
             if (!ctx2 || !canvas) return;
-            const W = canvas.offsetWidth;
-            const H = canvas.offsetHeight;
+            // Utilisation d'une largeur de repli sécurisée si le parent est masqué par le fade-in
+            const W = canvas.offsetWidth || 700;
+            const H = canvas.offsetHeight || 72;
             canvas.width  = W;
             canvas.height = H;
             ctx2.clearRect(0, 0, W, H);
@@ -306,7 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const n   = staticBars.length;
             const gap = 3;
             const bw  = (W - gap * (n - 1)) / n;
-            const progress = demoAudio.duration ? demoAudio.currentTime / demoAudio.duration : 0;
+            const duration = demoAudio.duration && !isNaN(demoAudio.duration) ? demoAudio.duration : 60;
+            const progress = demoAudio.currentTime / duration;
 
             staticBars.forEach((amp, i) => {
                 const barH = amp * H * 0.85;
@@ -325,7 +327,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 ctx2.fillStyle = grad;
                 ctx2.beginPath();
-                ctx2.roundRect(x, y, bw, barH, 2);
+                if (ctx2.roundRect) {
+                    ctx2.roundRect(x, y, bw, barH, 2);
+                } else {
+                    ctx2.rect(x, y, bw, barH);
+                }
                 ctx2.fill();
             });
         }
@@ -338,24 +344,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         function stopAnim() { cancelAnimationFrame(animRaf); }
 
-        // Initial draw
-        demoAudio.addEventListener('loadedmetadata', () => {
-            durTime.textContent = fmt(demoAudio.duration);
+        // Fonction d'initialisation sécurisée
+        function setupAudioMeta() {
+            if (demoAudio.duration && !isNaN(demoAudio.duration) && durTime) {
+                durTime.textContent = fmt(demoAudio.duration);
+            }
             drawWaveform();
-        });
+        }
+
+        // Initialisation immédiate ou via event
+        if (demoAudio.readyState >= 1) {
+            setupAudioMeta();
+        } else {
+            demoAudio.addEventListener('loadedmetadata', setupAudioMeta);
+        }
+        // Force un redessin au bout de 500ms pour contrer le décalage de rendu CSS
+        setTimeout(drawWaveform, 500);
 
         // Play / pause
         playBtn.addEventListener('click', () => {
             if (demoAudio.paused) {
-                demoAudio.play();
-                playIcon.style.display  = 'none';
-                pauseIcon.style.display = 'block';
-                playBtn.classList.add('playing');
-                startAnim();
+                const playPromise = demoAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        if (playIcon) playIcon.style.display  = 'none';
+                        if (pauseIcon) pauseIcon.style.display = 'block';
+                        playBtn.classList.add('playing');
+                        startAnim();
+                    }).catch(error => {
+                        console.error("Erreur de lecture audio IA :", error);
+                        alert("Le chargement du fichier audio a échoué ou a été bloqué par le navigateur. Veuillez réessayer.");
+                    });
+                }
             } else {
                 demoAudio.pause();
-                playIcon.style.display  = 'block';
-                pauseIcon.style.display = 'none';
+                if (playIcon) playIcon.style.display  = 'block';
+                if (pauseIcon) pauseIcon.style.display = 'none';
                 playBtn.classList.remove('playing');
                 stopAnim();
             }
@@ -391,11 +415,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ch.addEventListener('click', () => {
                 demoAudio.currentTime = parseFloat(ch.dataset.time);
                 if (demoAudio.paused) {
-                    demoAudio.play();
-                    playIcon.style.display  = 'none';
-                    pauseIcon.style.display = 'block';
-                    playBtn.classList.add('playing');
-                    startAnim();
+                    const playPromise = demoAudio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            if (playIcon) playIcon.style.display  = 'none';
+                            if (pauseIcon) pauseIcon.style.display = 'block';
+                            playBtn.classList.add('playing');
+                            startAnim();
+                        }).catch(err => {
+                            console.error("Erreur lecture chapitre IA :", err);
+                        });
+                    }
                 } else {
                     updateProgress();
                     drawWaveform();
