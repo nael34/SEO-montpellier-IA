@@ -58,7 +58,7 @@ export async function generateMetadata({ params }) {
   const villeDisplay = formatName(ville);
 
   const title = `${metierDisplay} à ${villeDisplay} — Création de Site Web IA | Montpellier-IA`;
-  const description = `Vous êtes ${metierDisplay.toLowerCase()} à ${villeDisplay} ? Attirez plus de clients avec un site web sur-mesure propulsé par l'intelligence artificielle. Design premium, ultra-rapide et optimisé SEO. Devis gratuit en 24h.`;
+  const description = `Site web IA premium pour ${metierDisplay.toLowerCase()} à ${villeDisplay}. Attirez plus de clients avec un design ultra-rapide et optimisé SEO. Devis gratuit en 24h.`;
 
   return {
     title,
@@ -73,11 +73,20 @@ export async function generateMetadata({ params }) {
       siteName: "Montpellier-IA",
       locale: "fr_FR",
       type: "website",
+      images: [
+        {
+          url: "https://montpellier-ia.dev/assets/images/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: "Montpellier-IA - Sites web IA premium",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: ["https://montpellier-ia.dev/assets/images/og-image.jpg"],
     },
     robots: {
       index: true,
