@@ -21,12 +21,12 @@ export default function Home() {
 
     <nav className="navbar" id="navbar">
         <div className="container navbar__inner">
-            <a href="index.html" className="navbar__logo">
+            <a href="/" className="navbar__logo">
                 <Image src="/assets/images/logo-officiel.png" alt="Logo Montpellier-IA" width={600} height={400} className="navbar__logo-img" style={{"height": "50px", "width": "auto", "objectFit": "contain"}} />
                 <span className="text-gradient">Montpellier-IA</span>
             </a>
             <div className="navbar__links">
-                <a href="index.html" className="navbar__link active">Accueil</a>
+                <a href="/" className="navbar__link active">Accueil</a>
                 <a href="tarifs.html" className="navbar__link">Tarifs</a>
                 <a href="exemples.html" className="navbar__link">Réalisations</a>
                 <a href="a-propos.html" className="navbar__link">À propos</a>
@@ -42,7 +42,7 @@ export default function Home() {
                     <span className="text-gradient">Montpellier-IA</span>
                 </span>
             </div>
-            <a href="index.html">Accueil</a>
+            <a href="/">Accueil</a>
             <a href="tarifs.html">Tarifs</a>
             <a href="exemples.html">Réalisations</a>
             <a href="a-propos.html">À propos</a>
@@ -471,7 +471,7 @@ export default function Home() {
                 <div>
                     <h4 className="footer__heading">Navigation</h4>
                     <div className="footer__links">
-                        <a href="index.html">Accueil</a>
+                        <a href="/">Accueil</a>
                         <a href="tarifs.html">Tarifs</a>
                         <a href="exemples.html">Réalisations</a>
                         <a href="a-propos.html">À propos</a>
