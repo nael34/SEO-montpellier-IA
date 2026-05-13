@@ -20,6 +20,10 @@
 
 import { metiers, villes, getAllCombinations } from "@/data/seo-data";
 
+// Force Next.js à ne servir que les pages générées statiquement via generateStaticParams
+// Désactive le rendu à la volée (SSR) qui cause l'erreur Vercel cdg1 sur les routes introuvables
+export const dynamicParams = false;
+
 // --------------------------------------------------------------------------
 // Helper : met en majuscule la première lettre d'un mot
 // --------------------------------------------------------------------------

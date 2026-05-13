@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  // Garantit la cohérence des URLs de pages statiques générées
+  trailingSlash: false,
 };
 
 export default nextConfig;
