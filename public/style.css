@@ -863,38 +863,175 @@ h4 {
     }
 }
 
-/* ─── PROCESS GRID (Tarifs) ─── */
-.process-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-    max-width: 1000px;
+/* ─── PROCESS SPECTACLE (Tarifs) ─── */
+.process-wrapper {
+    position: relative;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-.process-step {
-    width: 44px;
-    height: 44px;
+/* Ligne lumineuse de connexion en arrière-plan */
+.process-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 110px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.2), transparent);
+    z-index: 0;
+}
+
+/* Flux de particules IA parcourant le connecteur */
+.process-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 107px;
+    left: 10%;
+    width: 30px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--color-cyan);
+    box-shadow: 0 0 20px var(--color-cyan), 0 0 40px var(--color-primary);
+    animation: process-flow 4s ease-in-out infinite alternate;
+    z-index: 1;
+}
+
+@keyframes process-flow {
+    0% {
+        left: 10%;
+        opacity: 0.3;
+        transform: scaleX(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleX(2);
+    }
+    100% {
+        left: calc(90% - 30px);
+        opacity: 0.3;
+        transform: scaleX(1);
+    }
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Cartes en lévitation asynchrone spectaculaire */
+.process-card-premium {
+    background: var(--color-bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem 1.5rem;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Animation de flottaison continue personnalisée pour chaque carte */
+.process-card-premium:nth-child(1) { animation: card-float 6s ease-in-out infinite; }
+.process-card-premium:nth-child(2) { animation: card-float 6s ease-in-out infinite -1.5s; }
+.process-card-premium:nth-child(3) { animation: card-float 6s ease-in-out infinite -3s; }
+.process-card-premium:nth-child(4) { animation: card-float 6s ease-in-out infinite -4.5s; }
+
+@keyframes card-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.process-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.5), transparent);
+    transition: opacity var(--transition);
+    opacity: 0;
+}
+
+.process-card-premium:hover {
+    transform: translateY(-12px) scale(1.03) !important;
+    border-color: var(--color-cyan);
+    box-shadow: 0 15px 35px rgba(6, 182, 212, 0.2), inset 0 0 20px rgba(124, 58, 237, 0.1);
+    animation-play-state: paused;
+}
+
+.process-card-premium:hover::before {
+    opacity: 1;
+}
+
+/* Bulle d'étape avec halo tournant */
+.process-step-pulse {
+    position: relative;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: var(--gradient-primary);
+    background: var(--color-bg-alt);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
     font-weight: 800;
-    color: white;
+    color: var(--color-white);
+    border: 2px solid rgba(124, 58, 237, 0.3);
+    box-shadow: inset 0 0 15px rgba(124, 58, 237, 0.2);
+    transition: all var(--transition);
+}
+
+.process-step-pulse::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    z-index: -1;
+    opacity: 0.7;
+    animation: step-spin 4s linear infinite;
+}
+
+@keyframes step-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.process-card-premium:hover .process-step-pulse {
+    transform: scale(1.15);
+    border-color: var(--color-cyan);
+    color: var(--color-cyan-light);
+    box-shadow: 0 0 25px var(--color-cyan);
+}
+
+/* Micro-animations d'icônes intégrées */
+.process-icon-animated {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    transition: transform var(--transition);
+}
+
+.process-card-premium:hover .process-icon-animated {
+    transform: scale(1.2) rotate(5deg);
 }
 
 @media (max-width: 992px) {
-    .process-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .process-wrapper::before, .process-wrapper::after { display: none; }
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+    .process-card-premium { animation: none !important; }
 }
 
 @media (max-width: 600px) {
-    .process-grid {
-        grid-template-columns: 1fr;
-    }
+    .process-grid { grid-template-columns: 1fr; }
 }
 
 /* ─── STACK GRID (About) ─── */
