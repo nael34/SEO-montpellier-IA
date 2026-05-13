@@ -457,6 +457,110 @@ h4 {
     }
 }
 
+/* ─── BOUTONS CTA SUR-MESURE HERO (Index) ─── */
+
+/* 1. Bouton Cadeau Premium (Maquette Gratuite) */
+.btn--gift-premium {
+    background: var(--gradient-primary);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition);
+}
+
+.btn--gift-premium:hover {
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Reflet soyeux périodique (effet ruban) */
+.btn--gift-premium::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -60%;
+    width: 25%; height: 200%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transform: rotate(30deg);
+    animation: gift-sheen 5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes gift-sheen {
+    0%, 60% { left: -60%; }
+    100% { left: 140%; }
+}
+
+/* Tressaillement doux et périodique de l'émoji cadeau */
+.gift-icon-anim {
+    display: inline-block;
+    animation: gift-shake 5s ease-in-out infinite;
+}
+
+@keyframes gift-shake {
+    0%, 85%, 100% { transform: rotate(0deg) scale(1); }
+    88% { transform: rotate(-10deg) scale(1.1); }
+    92% { transform: rotate(10deg) scale(1.1); }
+    96% { transform: rotate(-5deg) scale(1.05); }
+}
+
+/* 2. Bouton Écoute IA (Onde Sonore Perpétuelle) */
+.btn--sound-wave {
+    border-color: rgba(6, 182, 212, 0.4);
+    color: var(--color-cyan-light);
+    background: rgba(6, 182, 212, 0.05);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    position: relative;
+    transition: all var(--transition);
+    animation: sound-btn-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes sound-btn-glow {
+    from { box-shadow: 0 0 5px rgba(6, 182, 212, 0.1); }
+    to { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+}
+
+.btn--sound-wave:hover {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: var(--color-cyan);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+/* Fines barres d'onde sonore intégrées */
+.soundwave-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 14px;
+}
+
+.soundwave-bar {
+    width: 2.5px;
+    background-color: var(--color-cyan);
+    border-radius: 2px;
+    animation: soundwave-pulse 1.2s ease-in-out infinite alternate;
+    opacity: 0.85;
+}
+
+.btn--sound-wave:hover .soundwave-bar {
+    background-color: var(--color-white);
+    opacity: 1;
+}
+
+.soundwave-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+.soundwave-bar:nth-child(2) { height: 12px; animation-delay: 0.4s; }
+.soundwave-bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+.soundwave-bar:nth-child(4) { height: 14px; animation-delay: 0.5s; }
+.soundwave-bar:nth-child(5) { height: 5px; animation-delay: 0.3s; }
+
+@keyframes soundwave-pulse {
+    0% { transform: scaleY(0.4); }
+    100% { transform: scaleY(1.1); }
+}
+
 /* ============================================
    8. HERO
    ============================================ */
