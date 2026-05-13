@@ -17,9 +17,12 @@
 
 import { getAllCombinations, BASE_URL } from "@/data/seo-data";
 
-export default function sitemap() {
-  // Date de dernière modification (utilisée par Google pour le crawl)
-  const lastModified = new Date();
+// Force la compilation statique du sitemap.xml
+export const dynamic = "force-static";
+
+export default async function sitemap() {
+  // Date de dernière modification au format ISO
+  const lastModified = new Date().toISOString();
 
   // ── Page d'accueil ──
   const homepage = {
