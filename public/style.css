@@ -1034,25 +1034,144 @@ h4 {
     .process-grid { grid-template-columns: 1fr; }
 }
 
-/* ─── STACK GRID (About) ─── */
+/* ─── STACK CYBERNETIQUE SPECTACLE (About) ─── */
 .stack-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    max-width: 800px;
+    gap: 1.5rem;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
+/* Carte holographique de pointe */
+.stack-card-cyber {
+    background: var(--color-bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-xl);
+    padding: 2rem 1.2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+}
+
+/* Ligne de scan holographique qui balaie la carte en boucle */
+.stack-card-cyber::before {
+    content: '';
+    position: absolute;
+    top: -100%; left: 0; right: 0; height: 3px;
+    background: linear-gradient(180deg, transparent, var(--color-cyan), transparent);
+    opacity: 0.15;
+    animation: cyber-scan 4s linear infinite;
+    pointer-events: none;
+}
+
+/* Décalage temporel du scan pour un effet chaotique contrôlé (matrice) */
+.stack-card-cyber:nth-child(2n)::before { animation-delay: -1s; }
+.stack-card-cyber:nth-child(3n)::before { animation-delay: -2.5s; }
+.stack-card-cyber:nth-child(4n)::before { animation-delay: -1.8s; }
+
+@keyframes cyber-scan {
+    0% { top: -50%; opacity: 0; }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.4; }
+    100% { top: 150%; opacity: 0; }
+}
+
+/* Effet au survol : illumination du cœur et rotation 3D */
+.stack-card-cyber:hover {
+    transform: translateY(-10px) scale(1.04);
+    border-color: var(--color-primary-light);
+    box-shadow: 0 12px 40px rgba(124, 58, 237, 0.25), inset 0 0 25px rgba(6, 182, 212, 0.15);
+    background: linear-gradient(180deg, rgba(15, 15, 35, 0.8), rgba(124, 58, 237, 0.1));
+}
+
+/* Icône en flottaison avec rebond au survol */
+.stack-icon-cyber {
+    font-size: 2.8rem;
+    margin-bottom: 0.8rem;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-block;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.1));
+}
+
+.stack-card-cyber:hover .stack-icon-cyber {
+    transform: scale(1.25) translateY(-5px) rotateY(15deg);
+    filter: drop-shadow(0 0 25px var(--color-cyan));
+}
+
+/* Titre principal */
+.stack-title-cyber {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 0.4rem;
+    transition: color var(--transition);
+    text-align: center;
+}
+
+.stack-card-cyber:hover .stack-title-cyber {
+    color: var(--color-cyan-light);
+}
+
+/* Jauge de niveau d'expertise / sous-titre technique */
+.stack-details-cyber {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    text-align: center;
+    transition: all var(--transition);
+    opacity: 0.8;
+}
+
+.stack-card-cyber:hover .stack-details-cyber {
+    color: var(--color-text-light);
+    opacity: 1;
+}
+
+/* Jauge lumineuse au bas de la carte */
+.stack-meter {
+    width: 40px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-top: 0.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: width var(--transition);
+}
+
+.stack-meter::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 0%;
+    background: var(--gradient-primary);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stack-card-cyber:hover .stack-meter {
+    width: 80px;
+}
+
+.stack-card-cyber:hover .stack-meter::after {
+    width: 100%;
+    box-shadow: 0 0 10px var(--color-cyan);
+}
+
 @media (max-width: 900px) {
-    .stack-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .stack-grid { grid-template-columns: repeat(2, 1fr); }
+    .stack-card-cyber::before { animation: none; }
 }
 
 @media (max-width: 480px) {
-    .stack-grid {
-        grid-template-columns: 1fr;
-    }
+    .stack-grid { grid-template-columns: 1fr; }
 }
 
 /* ─── TESTIMONIAL GRID (Exemples) ─── */
