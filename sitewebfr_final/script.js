@@ -74,14 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.querySelector('.navbar__toggle');
     const mobileMenu = document.querySelector('.navbar__mobile');
     if (toggle && mobileMenu && navbar) {
+        toggle.setAttribute('aria-expanded', 'false');
         toggle.addEventListener('click', () => {
             const isOpened = mobileMenu.classList.toggle('active');
             toggle.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', isOpened ? 'true' : 'false');
             navbar.classList.toggle('active', isOpened);
             document.body.style.overflow = isOpened ? 'hidden' : '';
         });
         mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
             toggle.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
             mobileMenu.classList.remove('active');
             navbar.classList.remove('active');
             document.body.style.overflow = '';
