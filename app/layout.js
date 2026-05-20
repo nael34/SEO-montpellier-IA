@@ -1,8 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Montpellier-IA — Création de sites web par Intelligence Artificielle",
-  description: "Propulsez votre entreprise avec un site web professionnel, ultra-rapide et optimisé pour le référencement local grâce à l'IA.",
+  title: "Montpellier-IA — Création de sites web premium (Montpellier & Occitanie)",
+  description:
+    "Site vitrine premium sur-mesure : design moderne, performance mobile, SEO technique. Maquette offerte en 10 minutes, sans engagement.",
 };
 
 export default function RootLayout({ children }) {

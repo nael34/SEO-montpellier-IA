@@ -79,12 +79,14 @@ function initSiteWeb() {
             toggle.classList.toggle('active');
             navbar.classList.toggle('active', isOpened);
             document.body.style.overflow = isOpened ? 'hidden' : '';
+            toggle.setAttribute('aria-expanded', isOpened ? 'true' : 'false');
         });
         mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
             toggle.classList.remove('active');
             mobileMenu.classList.remove('active');
             navbar.classList.remove('active');
             document.body.style.overflow = '';
+            toggle.setAttribute('aria-expanded', 'false');
         }));
     }
 
@@ -171,19 +173,38 @@ function initSiteWeb() {
             sr.querySelectorAll('#logo, a[href*="spline"], [id*="logo"], #watermark').forEach(el => el.remove());
         }
 
-        // Trigger fade-in only when loaded
+        // Dévoile la zone 3D tôt (scroll rapide, chargement Spline lent)
+        function revealSplineSoon() {
+            if (splineContainer) splineContainer.classList.add('visible');
+        }
+        requestAnimationFrame(revealSplineSoon);
+        setTimeout(revealSplineSoon, 120);
+        const heroSection = document.getElementById('hero');
+        if (heroSection && 'IntersectionObserver' in window) {
+            const io = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((en) => {
+                        if (en.isIntersecting) revealSplineSoon();
+                    });
+                },
+                { rootMargin: '200px 0px 200px 0px', threshold: 0 }
+            );
+            io.observe(heroSection);
+        }
+
+        // Trigger fade-in when loaded
         splineEl.addEventListener('load', () => {
             cleanSpline();
-            if (splineContainer) splineContainer.classList.add('visible');
+            revealSplineSoon();
         });
 
-        // Fail-safe: force visibility after 2s if load event was missed
+        // Fail-safe: force visibility sooner if load event was missed
         setTimeout(() => {
-            if (splineContainer && !splineContainer.classList.contains('visible')) {
+            if (splineContainer) {
                 cleanSpline();
-                splineContainer.classList.add('visible');
+                revealSplineSoon();
             }
-        }, 2000);
+        }, 700);
 
         // Periodic cleaning to ensure it stays hidden
         [500, 1000, 2000, 5000].forEach(t => setTimeout(cleanSpline, t));
