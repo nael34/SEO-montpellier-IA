@@ -3,53 +3,6 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { getAllCombinations } from '@/data/seo-data';
 
-function AiVoiceDemo({ ctaLabel = 'Je veux cette IA pour mon entreprise' }) {
-  return (
-    <section className="section section--alt grid-bg" id="demo-ia">
-      <div className="container">
-        <div className="section-header fade-in">
-          <div className="section-header__badge">Démo en direct</div>
-          <h2>Écoutez <span className="text-gradient">l&apos;IA en action</span></h2>
-          <p>Une vraie conversation d&apos;environ une minute. Scénario : appel entrant pour le cabinet d&apos;une avocate. <Link href="/demo-ia" style={{ color: 'var(--color-cyan)' }}>Page dédiée →</Link></p>
-        </div>
-        <div className="ai-demo-player fade-in" style={{ maxWidth: '780px', margin: '0 auto' }} data-ai-demo-root>
-          <div className="ai-demo-context">
-            <div className="ai-demo-context__icon">⚖️</div>
-            <div>
-              <div className="ai-demo-context__label">Mise en situation</div>
-              <div className="ai-demo-context__text">Simulation d&apos;un appel entrant pour le cabinet d&apos;une avocate. L&apos;IA répond, qualifie le besoin et propose un rendez-vous, sans intervention humaine.</div>
-            </div>
-          </div>
-          <div className="ai-demo-card">
-            <div className="ai-demo-waveform" id="waveformBars"><canvas id="waveformCanvas" width="700" height="72"></canvas></div>
-            <div className="ai-demo-progress" id="demoProgressBar"><div className="ai-demo-progress__fill" id="demoProgressFill"></div><div className="ai-demo-progress__handle" id="demoProgressHandle"></div></div>
-            <div className="ai-demo-time"><span id="demoCurrentTime">0:00</span><span id="demoDuration">—</span></div>
-            <div className="ai-demo-controls">
-              <button type="button" className="ai-demo-btn ai-demo-btn--skip" id="demoSkipBack" title="Reculer 10s">-10s</button>
-              <button type="button" className="ai-demo-btn ai-demo-btn--play" id="demoPlayBtn">
-                <svg id="demoPlayIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3" /></svg>
-                <svg id="demoPauseIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style={{ display: 'none' }}><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>
-              </button>
-              <button type="button" className="ai-demo-btn ai-demo-btn--skip" id="demoSkipFwd" title="Avancer 10s">+10s</button>
-            </div>
-          </div>
-          <div className="ai-demo-chapters">
-            <div className="ai-demo-chapters__title">Accès rapide</div>
-            <div className="ai-demo-chapters__list">
-              <button type="button" className="ai-demo-chapter" data-time="0"><span className="ai-demo-chapter__time">0:00</span><span className="ai-demo-chapter__label">L&apos;IA décroche et se présente</span></button>
-              <button type="button" className="ai-demo-chapter" data-time="8"><span className="ai-demo-chapter__time">0:08</span><span className="ai-demo-chapter__label">Qualification du besoin</span></button>
-              <button type="button" className="ai-demo-chapter" data-time="18"><span className="ai-demo-chapter__time">0:18</span><span className="ai-demo-chapter__label">Proposition de rendez-vous</span></button>
-            </div>
-          </div>
-          <div className="ai-demo-live-status"><span className="ai-demo-live-dot"></span><span className="ai-demo-live-text">IA connectée · flux audio qualifié en temps réel</span></div>
-          <audio id="demoAudio" preload="metadata"><source src="/demo-ia-vocale.mp3" type="audio/mpeg" /><source src="https://files.catbox.moe/oey3xy.mp3" type="audio/mpeg" /></audio>
-          <div style={{ textAlign: 'center', marginTop: '2rem' }}><a href="a-propos.html#contact" className="btn btn--primary btn--lg btn--pulse">{ctaLabel}</a></div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function Home() {
   const seoLinks = getAllCombinations().map(c => ({
     slug: `${c.metier}-a-${c.ville}`,
@@ -118,7 +71,7 @@ export default function Home() {
                     <a href="#maquette" className="btn btn--lg btn--gift-premium">
                         <span className="gift-icon-anim">🎁</span> Maquette gratuite (10 min)
                     </a>
-                    <a href="#demo-ia" className="btn btn--ghost btn--lg btn--sound-wave">
+                    <Link href="/demo-ia" className="btn btn--ghost btn--lg btn--sound-wave">
                         Écoutez l&apos;IA en action
                         <span className="soundwave-indicator">
                             <span className="soundwave-bar"></span>
@@ -127,7 +80,7 @@ export default function Home() {
                             <span className="soundwave-bar"></span>
                             <span className="soundwave-bar"></span>
                         </span>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -271,8 +224,6 @@ export default function Home() {
             </div>
         </div>
     </section>
-
-    <AiVoiceDemo />
 
     <section className="section section--alt grid-bg" id="offres">
         <div className="container">
