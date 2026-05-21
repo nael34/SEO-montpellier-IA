@@ -261,9 +261,19 @@ function initSiteWeb() {
     }
 
 
-    /* ─── AI Voice Demo Player ─── */
+    initAiDemoPlayer();
+}
+
+/* ─── AI Voice Demo Player (réinit OK après navigation Next.js) ─── */
+function initAiDemoPlayer() {
     const demoAudio = document.getElementById('demoAudio');
-    if (demoAudio) {
+    if (!demoAudio || demoAudio.dataset.playerReady === '1') return;
+    demoAudio.dataset.playerReady = '1';
+
+    const playerRoot = demoAudio.closest('.ai-demo-player');
+    if (playerRoot) playerRoot.classList.add('visible');
+
+    {
         const playBtn   = document.getElementById('demoPlayBtn');
         const playIcon  = document.getElementById('demoPlayIcon');
         const pauseIcon = document.getElementById('demoPauseIcon');
@@ -383,6 +393,7 @@ function initSiteWeb() {
         setTimeout(drawWaveform, 500);
 
         // Play / pause
+        if (!playBtn) return;
         playBtn.addEventListener('click', () => {
             if (demoAudio.paused) {
                 const playPromise = demoAudio.play();
@@ -408,9 +419,9 @@ function initSiteWeb() {
 
         // Ended
         demoAudio.addEventListener('ended', () => {
-            playIcon.style.display  = 'block';
-            pauseIcon.style.display = 'none';
-            playBtn.classList.remove('playing');
+            if (playIcon) playIcon.style.display  = 'block';
+            if (pauseIcon) pauseIcon.style.display = 'none';
+            if (playBtn) playBtn.classList.remove('playing');
             stopAnim();
             updateProgress();
             drawWaveform();
@@ -458,13 +469,26 @@ function initSiteWeb() {
         window.addEventListener('resize', drawWaveform);
         drawWaveform();
     }
-
 }
 
-// Next.js hydration safe execution
+window.initAiDemoPlayer = initAiDemoPlayer;
+
+let siteWebBooted = false;
+function bootSiteWeb() {
+    if (!siteWebBooted) {
+        siteWebBooted = true;
+        initSiteWeb();
+    }
+    initAiDemoPlayer();
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSiteWeb);
+    document.addEventListener('DOMContentLoaded', bootSiteWeb);
 } else {
-    // Si exécuté via next/script lazyOnload, le DOM est déjà monté
-    setTimeout(initSiteWeb, 100);
+    setTimeout(bootSiteWeb, 100);
+}
+
+if (typeof MutationObserver !== 'undefined') {
+    const demoNavObserver = new MutationObserver(() => initAiDemoPlayer());
+    demoNavObserver.observe(document.documentElement, { childList: true, subtree: true });
 }

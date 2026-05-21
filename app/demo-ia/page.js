@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
+import DemoPlayerBoot from '@/components/DemoPlayerBoot';
 
 export const metadata = {
   title: 'Démo IA vocale — Montpellier-IA',
@@ -16,7 +17,7 @@ function AiVoiceDemo() {
           <h2>Écoutez <span className="text-gradient">l&apos;IA en action</span></h2>
           <p>Scénario avocate : appel entrant, qualification, prise de rendez-vous.</p>
         </div>
-        <div className="ai-demo-player fade-in" style={{ maxWidth: '780px', margin: '0 auto' }}>
+        <div className="ai-demo-player visible" style={{ maxWidth: '780px', margin: '0 auto' }}>
           <div className="ai-demo-context">
             <div className="ai-demo-context__icon">⚖️</div>
             <div>
@@ -46,7 +47,10 @@ function AiVoiceDemo() {
             </div>
           </div>
           <div className="ai-demo-live-status"><span className="ai-demo-live-dot"></span><span className="ai-demo-live-text">IA connectée · flux audio en temps réel</span></div>
-          <audio id="demoAudio" preload="metadata"><source src="/demo-ia-vocale.mp3" type="audio/mpeg" /><source src="https://files.catbox.moe/oey3xy.mp3" type="audio/mpeg" /></audio>
+          <audio id="demoAudio" preload="auto" crossOrigin="anonymous">
+            <source src="https://files.catbox.moe/oey3xy.mp3" type="audio/mpeg" />
+            <source src="/demo-ia-vocale.mp3" type="audio/mpeg" />
+          </audio>
           <div style={{ textAlign: 'center', marginTop: '2rem' }}><a href="a-propos.html#contact" className="btn btn--primary btn--lg btn--pulse">Je veux cette IA pour mon entreprise</a></div>
         </div>
       </div>
@@ -93,12 +97,19 @@ export default function DemoIaPage() {
         </div>
       </section>
       <AiVoiceDemo />
+      <DemoPlayerBoot />
       <footer className="footer">
         <div className="container">
           <div className="footer__bottom"><p>© 2026 Montpellier-IA</p></div>
         </div>
       </footer>
-      <Script src="/script.js" strategy="afterInteractive" />
+      <Script
+        src="/script.js"
+        strategy="afterInteractive"
+        onReady={() => {
+          if (typeof window !== 'undefined' && window.initAiDemoPlayer) window.initAiDemoPlayer();
+        }}
+      />
     </>
   );
 }

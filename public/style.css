@@ -2096,11 +2096,20 @@ select.form-input {
 }
 
 /* Controls */
+.ai-demo-player {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+}
+
 .ai-demo-controls {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
+    position: relative;
+    z-index: 3;
+    pointer-events: auto;
 }
 
 .ai-demo-btn {
