@@ -3,6 +3,53 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { getAllCombinations } from '@/data/seo-data';
 
+function AiVoiceDemo({ ctaLabel = 'Je veux cette IA pour mon entreprise' }) {
+  return (
+    <section className="section section--alt grid-bg" id="demo-ia">
+      <div className="container">
+        <div className="section-header fade-in">
+          <div className="section-header__badge">Démo en direct</div>
+          <h2>Écoutez <span className="text-gradient">l&apos;IA en action</span></h2>
+          <p>Une vraie conversation d&apos;environ une minute. Scénario : appel entrant pour le cabinet d&apos;une avocate. <Link href="/demo-ia" style={{ color: 'var(--color-cyan)' }}>Page dédiée →</Link></p>
+        </div>
+        <div className="ai-demo-player fade-in" style={{ maxWidth: '780px', margin: '0 auto' }} data-ai-demo-root>
+          <div className="ai-demo-context">
+            <div className="ai-demo-context__icon">⚖️</div>
+            <div>
+              <div className="ai-demo-context__label">Mise en situation</div>
+              <div className="ai-demo-context__text">Simulation d&apos;un appel entrant pour le cabinet d&apos;une avocate. L&apos;IA répond, qualifie le besoin et propose un rendez-vous, sans intervention humaine.</div>
+            </div>
+          </div>
+          <div className="ai-demo-card">
+            <div className="ai-demo-waveform" id="waveformBars"><canvas id="waveformCanvas" width="700" height="72"></canvas></div>
+            <div className="ai-demo-progress" id="demoProgressBar"><div className="ai-demo-progress__fill" id="demoProgressFill"></div><div className="ai-demo-progress__handle" id="demoProgressHandle"></div></div>
+            <div className="ai-demo-time"><span id="demoCurrentTime">0:00</span><span id="demoDuration">—</span></div>
+            <div className="ai-demo-controls">
+              <button type="button" className="ai-demo-btn ai-demo-btn--skip" id="demoSkipBack" title="Reculer 10s">-10s</button>
+              <button type="button" className="ai-demo-btn ai-demo-btn--play" id="demoPlayBtn">
+                <svg id="demoPlayIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3" /></svg>
+                <svg id="demoPauseIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style={{ display: 'none' }}><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>
+              </button>
+              <button type="button" className="ai-demo-btn ai-demo-btn--skip" id="demoSkipFwd" title="Avancer 10s">+10s</button>
+            </div>
+          </div>
+          <div className="ai-demo-chapters">
+            <div className="ai-demo-chapters__title">Accès rapide</div>
+            <div className="ai-demo-chapters__list">
+              <button type="button" className="ai-demo-chapter" data-time="0"><span className="ai-demo-chapter__time">0:00</span><span className="ai-demo-chapter__label">L&apos;IA décroche et se présente</span></button>
+              <button type="button" className="ai-demo-chapter" data-time="8"><span className="ai-demo-chapter__time">0:08</span><span className="ai-demo-chapter__label">Qualification du besoin</span></button>
+              <button type="button" className="ai-demo-chapter" data-time="18"><span className="ai-demo-chapter__time">0:18</span><span className="ai-demo-chapter__label">Proposition de rendez-vous</span></button>
+            </div>
+          </div>
+          <div className="ai-demo-live-status"><span className="ai-demo-live-dot"></span><span className="ai-demo-live-text">IA connectée · flux audio qualifié en temps réel</span></div>
+          <audio id="demoAudio" preload="metadata"><source src="/demo-ia-vocale.mp3" type="audio/mpeg" /><source src="https://files.catbox.moe/oey3xy.mp3" type="audio/mpeg" /></audio>
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}><a href="a-propos.html#contact" className="btn btn--primary btn--lg btn--pulse">{ctaLabel}</a></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   const seoLinks = getAllCombinations().map(c => ({
     slug: `${c.metier}-a-${c.ville}`,
@@ -23,6 +70,7 @@ export default function Home() {
                 <a href="/" className="navbar__link active">Accueil</a>
                 <a href="tarifs.html" className="navbar__link">Tarifs</a>
                 <a href="exemples.html" className="navbar__link">Réalisations</a>
+                <Link href="/demo-ia" className="navbar__link">Démo IA</Link>
                 <a href="a-propos.html" className="navbar__link">À propos</a>
             </div>
             <a href="a-propos.html#contact" className="btn btn--primary navbar__cta">Réserver un appel</a>
@@ -40,6 +88,7 @@ export default function Home() {
             <a href="/">Accueil</a>
             <a href="tarifs.html">Tarifs</a>
             <a href="exemples.html">Réalisations</a>
+            <Link href="/demo-ia">Démo IA</Link>
             <a href="a-propos.html">À propos</a>
             <a href="a-propos.html#contact" className="btn btn--primary btn--full" style={{ marginTop: '1rem' }}>Réserver un appel</a>
         </div>
@@ -69,8 +118,15 @@ export default function Home() {
                     <a href="#maquette" className="btn btn--lg btn--gift-premium">
                         <span className="gift-icon-anim">🎁</span> Maquette gratuite (10 min)
                     </a>
-                    <a href="tarifs.html" className="btn btn--ghost btn--lg">
-                        Voir les formules
+                    <a href="#demo-ia" className="btn btn--ghost btn--lg btn--sound-wave">
+                        Écoutez l&apos;IA en action
+                        <span className="soundwave-indicator">
+                            <span className="soundwave-bar"></span>
+                            <span className="soundwave-bar"></span>
+                            <span className="soundwave-bar"></span>
+                            <span className="soundwave-bar"></span>
+                            <span className="soundwave-bar"></span>
+                        </span>
                     </a>
                 </div>
             </div>
@@ -155,8 +211,8 @@ export default function Home() {
                 <div className="section-header__badge">Comment je travaille</div>
                 <h2>Un site <span className="text-gradient">clair, rapide, crédible</span></h2>
                 <p>
-                    Objectif unique : une présence web professionnelle qui raconte votre activité et incite à vous
-                    contacter. Chaque bloc ci-dessous sert ce résultat.
+                    Je combine web design premium et intelligence artificielle : d&apos;abord votre site, puis l&apos;automation
+                    (IA téléphonique, leads) quand vous êtes prêt à scaler.
                 </p>
             </div>
 
@@ -171,25 +227,22 @@ export default function Home() {
                 </div>
 
                 <div className="bento__item fade-in fade-in-delay-1">
-                    <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📱</div>
-                    <h4 style={{ marginBottom: '0.5rem' }}>Mobile d&apos;abord</h4>
-                    <p className="card__text">Mise en page testée sur téléphone : lisibilité, boutons accessibles, rien
-                        qui dépasse. C&apos;est souvent le premier écran que vos clients voient.</p>
+                    <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🎨</div>
+                    <h4 style={{ marginBottom: '0.5rem' }}>Personnalisation illimitée</h4>
+                    <p className="card__text">Je modifie votre site autant que nécessaire avant la mise en ligne pour qu&apos;il corresponde à votre vision.</p>
                 </div>
 
                 <div className="bento__item fade-in fade-in-delay-1">
-                    <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⚡</div>
-                    <h4 style={{ marginBottom: '0.5rem' }}>Performance réelle</h4>
-                    <p className="card__text">Temps de chargement, images optimisées, code propre : un site rapide
-                        rassure les visiteurs et aide le référencement.</p>
+                    <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🤖</div>
+                    <h4 style={{ marginBottom: '0.5rem' }}>IA téléphonique</h4>
+                    <p className="card__text">Une IA qui répond à vos appels 24h/24, qualifie les prospects et prend les rendez-vous à votre place.</p>
                 </div>
 
                 <div className="bento__item bento__item--wide fade-in fade-in-delay-2">
                     <div>
-                        <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🔍</div>
-                        <h3 style={{ marginBottom: '0.75rem' }}>SEO technique &amp; pages locales</h3>
-                        <p className="card__text">Balises, structure, pages ciblées par ville et par métier quand c&apos;est
-                            pertinent : vous gagnez en visibilité là où vos clients cherchent.</p>
+                        <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>🎯</div>
+                        <h3 style={{ marginBottom: '0.75rem' }}>Génération de leads automatisée</h3>
+                        <p className="card__text">L&apos;IA identifie, contacte et qualifie vos prospects pendant que vous vous concentrez sur votre cœur de métier.</p>
                     </div>
                 </div>
             </div>
@@ -208,55 +261,71 @@ export default function Home() {
                     <div className="stats-grid__label">Clients satisfaits</div>
                 </div>
                 <div className="stats-grid__item">
-                    <div className="stats-grid__value" data-count="14" data-suffix=" j">0</div>
-                    <div className="stats-grid__label">Délai cible moyen</div>
+                    <div className="stats-grid__value" data-count="10000" data-suffix="+">0</div>
+                    <div className="stats-grid__label">Leads générés</div>
                 </div>
                 <div className="stats-grid__item">
-                    <div className="stats-grid__value" data-count="10" data-suffix=" min">0</div>
-                    <div className="stats-grid__label">Maquette découverte</div>
+                    <div className="stats-grid__value" data-count="24" data-suffix="/7">0</div>
+                    <div className="stats-grid__label">IA disponible</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section className="section section--alt grid-bg">
+    <AiVoiceDemo />
+
+    <section className="section section--alt grid-bg" id="offres">
         <div className="container">
             <div className="section-header fade-in">
-                <div className="section-header__badge">Offre principale</div>
-                <h2>Tarif transparent : <span className="text-gradient">site web premium</span></h2>
-                <p>Une entrée simple pour démarrer. Le détail des options figure sur la page tarifs.</p>
+                <div className="section-header__badge">Offres</div>
+                <h2>Deux niveaux pour <span className="text-gradient">dominer votre marché</span></h2>
+                <p>Commencez par votre site web. Activez l&apos;IA une fois votre vitrine en ligne.</p>
             </div>
 
-            <div className="fade-in" style={{ maxWidth: '28rem', margin: '0 auto' }}>
+            <div className="pricing-grid fade-in">
                 <div className="pricing-card">
                     <div className="pricing-card__icon">🌐</div>
-                    <p className="pricing-card__name">Site web premium</p>
+                    <p className="pricing-card__name">Site Web Premium</p>
                     <div className="pricing-card__price"><span className="text-gradient">500€</span></div>
                     <p className="pricing-card__period">Paiement unique · hébergement offert 1 an</p>
-                    <p className="pricing-card__desc">Site professionnel sur-mesure, responsive, optimisé pour le
-                        référencement et pensé pour transformer les visites en demandes de contact.</p>
+                    <p className="pricing-card__desc">Un site professionnel qui vous ressemble, optimisé pour convertir vos visiteurs en clients.</p>
                     <div className="pricing-card__features">
-                        <div className="pricing-card__feature"><span className="check">✓</span> Multi-pages sur-mesure</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Site multi-pages sur-mesure</div>
                         <div className="pricing-card__feature"><span className="check">✓</span> Design premium responsive</div>
-                        <div className="pricing-card__feature"><span className="check">✓</span> SEO technique de base</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Optimisation SEO complète</div>
                         <div className="pricing-card__feature"><span className="check">✓</span> Formulaire &amp; contact</div>
-                        <div className="pricing-card__feature"><span className="check">✓</span> Accompagnement jusqu&apos;à la mise en ligne</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Livré en 2 semaines</div>
                     </div>
-                    <a href="a-propos.html#contact" className="btn btn--primary btn--lg btn--full">Demander un devis</a>
+                    <a href="a-propos.html#contact" className="btn btn--outline btn--lg btn--full">Choisir cette offre</a>
                 </div>
-                <p style={{ textAlign: 'center', marginTop: '1.5rem', color: 'var(--color-text-muted)', fontSize: '0.9rem' }} className="fade-in">
-                    Besoin d&apos;automation ou d&apos;outils avancés une fois le site en ligne ?{' '}
-                    <a href="tarifs.html" style={{ color: 'var(--color-cyan)', textDecoration: 'underline' }}>Voir aussi les offres détaillées</a>.
-                </p>
+                <div className="pricing-card pricing-card--featured">
+                    <div className="pricing-card__popular">Game changer</div>
+                    <div className="pricing-card__icon">🤖</div>
+                    <p className="pricing-card__name">IA Business</p>
+                    <div className="pricing-card__price"><span className="text-gradient">1 000€</span></div>
+                    <p className="pricing-card__period">Setup unique · à partir de 50€/mois</p>
+                    <p className="pricing-card__desc">L&apos;IA qui travaille pour vous : elle répond aux appels, scrute le web et vous ramène des leads qualifiés.</p>
+                    <div className="pricing-card__features">
+                        <div className="pricing-card__feature"><span className="check">✓</span> IA téléphonique 24/7</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Web scraping de leads ciblés</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Qualification automatique</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Dashboard de suivi</div>
+                        <div className="pricing-card__feature"><span className="check">✓</span> Support prioritaire</div>
+                    </div>
+                    <a href="a-propos.html#contact" className="btn btn--primary btn--lg btn--full">Choisir cette offre</a>
+                </div>
             </div>
+            <p style={{ textAlign: 'center', marginTop: '2rem', color: 'var(--color-text-muted)', fontSize: '0.85rem' }} className="fade-in">
+                Pack complet site + IA : <strong style={{ color: 'var(--color-cyan)' }}>1 300€</strong> au lieu de 1 500€.
+            </p>
         </div>
     </section>
 
     <section className="section">
         <div className="container">
             <div className="cta fade-in">
-                <h2>Lançons <span className="text-gradient">votre site</span></h2>
-                <p>Réservez un appel gratuit d&apos;environ 15 minutes : on cadrera votre projet sans engagement.</p>
+                <h2>Prêt à <span className="text-gradient">automatiser</span> votre business ?</h2>
+                <p>Réservez un appel gratuit de 15 min. On parle de votre projet, sans engagement.</p>
                 <a href="a-propos.html#contact" className="btn btn--primary btn--lg">
                     Maquette offerte (10 min)
                 </a>
@@ -285,8 +354,7 @@ export default function Home() {
                         <Image src="/assets/images/logo-officiel.png" alt="Logo Montpellier-IA" width={600} height={400} className="footer__logo-img" style={{ height: '48px', width: 'auto', borderRadius: '4px' }} />{' '}
                         <span className="text-gradient">Montpellier-IA</span>
                     </div>
-                    <p className="footer__desc">Création de sites web premium pour indépendants et petites structures :
-                        design soigné, performance et SEO technique.</p>
+                    <p className="footer__desc">Sites web premium &amp; solutions IA pour propulser votre business dans l&apos;ère du digital intelligent.</p>
                 </div>
                 <div>
                     <h4 className="footer__heading">Navigation</h4>
@@ -294,6 +362,7 @@ export default function Home() {
                         <a href="/">Accueil</a>
                         <a href="tarifs.html">Tarifs</a>
                         <a href="exemples.html">Réalisations</a>
+                        <Link href="/demo-ia">Démo IA</Link>
                         <a href="a-propos.html">À propos</a>
                     </div>
                 </div>

@@ -32,6 +32,13 @@ export default async function sitemap() {
     priority: 1.0,
   };
 
+  const demoIa = {
+    url: `${BASE_URL}/demo-ia`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: 0.9,
+  };
+
   // ── Pages SEO programmatiques (toutes les combinaisons métier + ville) ──
   const seoPages = getAllCombinations().map(({ metier, ville }) => ({
     url: `${BASE_URL}/${metier}-a-${ville}`,
@@ -41,5 +48,5 @@ export default async function sitemap() {
   }));
 
   // ── Retourne toutes les URLs ──
-  return [homepage, ...seoPages];
+  return [homepage, demoIa, ...seoPages];
 }
